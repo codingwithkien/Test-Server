@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat App</title>
+    <style>
+      #messages {
+        height: 200px;
+        overflow-y: scroll;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="messages"></div>
+    <input type="text" id="messageInput" />
+    <button onclick="sendMessage()">Send</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
+    <script>
+      const socket = io("http://192.168.1.2:3000");
+
+      socket.on("connect", () => {
+        console.log("Connected to Socket.IO server");
+      });
+
+      socket.on("message", (message) => {
+        const messagesDiv = document.getElementById("messages");
+        messagesDiv.innerHTML += `<div>${message}</div>`;
+      });
+
+      function sendMessage() {
+        const messageInput = document.getElementById("messageInput");
+        const message = messageInput.value.trim();
+        if (message !== "") {
+          socket.emit("message", message);
+          messageInput.value = "";
+        }
+      }
+    </script>
+  </body>
+</html>
