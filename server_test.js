@@ -10,17 +10,24 @@ app.use((req, res, next) => {
 });
 
 io.on("connection", (socket) => {
-  console.log("A user connected");
-
-  socket.on("message", (message) => {
-    console.log("Message:", message);
-    io.emit("message", message);
+    console.log("A user connected");
+  
+    socket.on("message", (message) => {
+      console.log("Message:", message);
+      if (message === "0") {
+        socket.emit("message", "Hello");
+      } else if (message === "1") {
+        socket.emit("message", "Kiên");
+      } else {
+        // Handle other messages as needed
+      }
+    });
+  
+    socket.on("disconnect", () => {
+      console.log("User disconnected");
+    });
   });
-
-  socket.on("disconnect", () => {
-    console.log("User disconnected");
-  });
-});
+  
 
 server.listen(3000, () => {
   console.log("Server is listening on port 3000");

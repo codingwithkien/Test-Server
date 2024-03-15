@@ -15,9 +15,7 @@ const ChatApp = () => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const newSocket = io(
-      "https://southamerica-west1-smartserver-417316.cloudfunctions.net/Server"
-    );
+    const newSocket = io("https://test-server-1-qp5v.onrender.com");
 
     newSocket.on("connect", () => {
       console.log("Connected to WebSocket server");
@@ -38,6 +36,16 @@ const ChatApp = () => {
     if (inputText.trim() !== "") {
       socket.emit("message", inputText);
       setInputText("");
+    }
+  };
+
+  const handleCustomMessage = (number) => {
+    if (socket) {
+      if (number === 0) {
+        socket.emit("message", "0");
+      } else if (number === 1) {
+        socket.emit("message", "1");
+      }
     }
   };
 
@@ -64,6 +72,20 @@ const ChatApp = () => {
         onPress={sendMessage}
       >
         <Text style={{ color: "#000" }}>Submit</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{ color: "#000" }}
+        title="Send 0"
+        onPress={() => handleCustomMessage(0)}
+      >
+        <Text style={{ color: "#000" }}>Send 0</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{ color: "#000" }}
+        title="Send 1"
+        onPress={() => handleCustomMessage(1)}
+      >
+        <Text style={{ color: "#000" }}>Send 1</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
