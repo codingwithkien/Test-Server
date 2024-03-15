@@ -16,8 +16,10 @@ io.on("connection", (socket) => {
       console.log("Message:", message);
       if (message === "0") {
         socket.emit("message", "Hello");
+        digitalWrite(lightPin, LOW);
       } else if (message === "1") {
         socket.emit("message", "Kiên");
+        digitalWrite(lightPin, HIGH);
       } else {
         // Handle other messages as needed
       }
